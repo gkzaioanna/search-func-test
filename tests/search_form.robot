@@ -30,7 +30,7 @@ Test 4: Search should not consider trailing spaces
     [Teardown]    Close Browser
     Given The User Has Access To Homepage
     When The User Includes Extra Space In The Input In The Search Form
-    Then The User Should Be Able To View Locations Related To Search    1101AX
+    Then The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
 
 Test 5: Search should not be case sensitive
     [Documentation]
