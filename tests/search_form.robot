@@ -1,8 +1,6 @@
 *** Settings ***
 Resource    ../resources/search.resource
 Resource    ../resources/browser.resource
-#Library     ../lib/browser_settings.py
-
 
 *** Test Cases ***
 Test 1: Search with a valid input
@@ -36,17 +34,17 @@ Test 5: Search should not be case sensitive
     [Documentation]
     [Teardown]    Close Browser
     Given The User Has Access To Homepage
-    When The User Enters Location In Lower Case In The Search Form    utrecht
-    And The User Enters Location In Upper Case In The Search Form    UTRECHT
+    When The User Enters Location In Lower Case In The Search Form
+    And The User Enters Location In Upper Case In The Search Form
     Then The Results In Both Cases Should Be The Same
 
 Test 6: Search should display message when no location is available
     [Documentation]
     [Teardown]    Close Browser
     Given The User Has Access To Homepage
-    When The User Enters A Valid Place Or Address In The Search Form    Amsterdam
+    When The User Enters A Valid Place Or Address In The Search Form
     And There Is No Available Spot In The Location
-    Then The HMI Should Display A Message    ${NO_LOCATION_TXT}= No results in this map area.
+    Then The HMI Should Display A Message    ${NO_LOCATION_TXT}
 
 Test 7: Search should not allow malicious data
     [Documentation]

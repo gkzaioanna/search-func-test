@@ -3,12 +3,14 @@ Library    OperatingSystem
 Library    SeleniumLibrary
 
 *** Variables ***
-${XPATHS}          xpath=
-${SEARCH_INPUT}    //input[@placeholder='Search place or address']
-${SEARCH_BTN}      ${XPATHS}//pb-button//button[contains(@class,'pb-button')]
-${INVALID_INPUT_TXT}    There are no results for this search
-${EMPTY_INPUT_TXT}    Oops, choose a location first
+# Expected Messages
+${INVALID_INPUT_TXT}      There are no results for this search
+${EMPTY_INPUT_TXT}        Oops, choose a location first
 ${RELATED_RESULTS_TXT}    Recommended for you
+${NO_LOCATION_TXT}        No results in this map area.
+# Web Locators
+${SEARCH_INPUT}        //input[@placeholder='Search place or address']
+${SEARCH_BTN}          //pb-button//button[contains(@class,'pb-button')]
 ${RESULTS_SUCCESS}    //h3[text()=${RELATED_RESULTS_TXT}]
 
 
@@ -63,3 +65,19 @@ No Results Should Be Generated And A Message Is Displayed
     [Arguments]    ${txt}
     Page Should Contain    ${txt}
     Capture Page Screenshot
+
+The User Enters Location In Lower Case In The Search Form
+    [Documentation]
+    Enter Input    utrecht centraal
+
+The User Enters Location In Upper Case In The Search Form
+    [Documentation]
+    Enter Input    Utrecht Centraal
+
+The Results In Both Cases Should Be The Same
+    [Documentation]
+
+
+There Is No Available Spot In The Location
+    [Documentation]
+    Go To
