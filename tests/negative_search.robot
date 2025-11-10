@@ -23,13 +23,15 @@ Test 2 Search with empty input
     Then No Results Should Be Generated And A Message Is Displayed    ${EMPTY_INPUT_TXT}
 
 Test 3 Search with only spaces
-    [Documentation]
+    [Documentation]    This test verifies that when a user provides only spaces in the search form,
+    ...    then the HMI should display an appropriate message and no results.
     Given The User Has Access To Homepage
     When The User Enters Only Spaces In The Search Form
     Then No Results Should Be Generated And A Message Is Displayed    ${EMPTY_INPUT_TXT}
 
 Test 4 Search with excessively long input
-    [Documentation]
+    [Documentation]    This test verifies that when a user provides too long input in the search form,
+    ...    then the HMI should display an appropriate message and no results.
     Given The User Has Access To Homepage
     When The User Enters Excessively Long Input In The Search Form
     Then No Results Should Be Generated And A Message Is Displayed    ${INVALID_INPUT_TXT}
