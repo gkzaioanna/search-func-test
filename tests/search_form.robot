@@ -46,13 +46,15 @@ Test 5 Partial match search
     When The User Enters A Partial Input In The Search Form
     Then The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
 
-#Test 6 Search should not be case sensitive
-#    [Documentation]
-#    [Teardown]    Close Browser
-#    Given The User Has Access To Homepage
-#    When The User Enters Location In The Search Form    ${LOWER_CASE_INPUT}
-#    And The User Enters Location In The Search Form    ${UPPER_CASE_INPUT}
-#    Then The Results In Both Cases Should Be The Same    ${LOWER_CASE_INPUT}    ${UPPER_CASE_INPUT}
+Test 6 Search should not be case sensitive
+    [Documentation]    This test verifies that when a user provides input in lower case or
+    ...    in upper case in the search form, then the HMI should display the related results
+    ...    according to search and the results should be the same.
+    [Teardown]    Close Browser
+    Given The User Has Access To Homepage
+    When The User Enters Location In Lower Case In The Search Form
+    And The User Enters Location In Upper Case In The Search Form
+    Then The Results In Both Cases Should Be The Same
 #
 #Test 7 Search should display message when no location is available
 #    [Documentation]

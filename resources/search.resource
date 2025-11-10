@@ -4,6 +4,7 @@ Library    SeleniumLibrary
 Library    Collections
 Library    String
 Resource    general.resource
+Resource    browser.resource
 
 *** Variables ***
 # Expected Messages
@@ -83,38 +84,45 @@ The User Enters A Partial Input In The Search Form
     [Documentation]    The user does not enter the full input.
     Enter Input    ${VALID_INPUT_1}[0:4]
 
-
+Get Normalized Search Results
+    [Arguments]    ${result_locator}=${SEARCH_RESULTS}
+    Wait Until Page Contains Element    ${result_locator}    timeout=10s
+    ${elements}=    Get WebElements    ${result_locator}
+    ${texts}=    Create List
+    FOR    ${el}    IN    @{elements}
+        ${text}=    Get Text    ${el}
+        ${text_clean}=    Strip String    ${text}
+        ${text_lower}=    Convert To Lowercase    ${text_clean}
+        Append To List    ${texts}    ${text_lower}
+    END
+    RETURN    ${texts}
 
 The User Enters Location In Lower Case In The Search Form
     [Documentation]
     Enter Input    ${LOWER_CASE_INPUT}
     The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
+    ${LOWER_CASE_RESULTS}=    Get Normalized Search Results
+    Set Suite Variable    ${LOWER_CASE_RESULTS}
 
 The User Enters Location In Upper Case In The Search Form
     [Documentation]
+    Close Browser
+    The User Has Access To Homepage
     Enter Input    ${UPPER_CASE_INPUT}
     The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
+    ${UPPER_CASE_RESULTS}=    Get Normalized Search Results
+    Set Suite Variable    ${UPPER_CASE_RESULTS}
 
 The Results In Both Cases Should Be The Same
-    [Arguments]    ${first_input}    ${second_input}    ${result_locator}=${SEARCH_RESULTS}
-    Wait Until Element Is Visible    ${result_locator}    timeout=10s
-    ${first_elements}=    Get WebElements    ${result_locator}
-    ${first_texts}=    Create List
-    FOR    ${el}    IN    @{first_elements}
-        ${text}=    Get Text    ${el}
-        ${text_lower}=    Convert To Lowercase    ${text}
-        Append To List    ${first_texts}    ${text_lower}
-    END
-    Custom Capture Screenshot
-    ${second_elements}=    Get WebElements    ${result_locator}
-    ${second_texts}=    Create List
-    FOR    ${el}    IN    @{second_elements}
-        ${text}=    Get Text    ${el}
-        ${text_lower}=    Convert To Lowercase    ${text}
-        Append To List    ${second_texts}    ${text_lower}
-    END
-    Custom Capture Screenshot
-    Should Be Equal As Lists    ${first_texts}    ${second_texts}
+#    [Arguments]    ${lower_case_results}    ${upper_case_results}    #${result_locator}=${SEARCH_RESULTS}
+#    Clear Element Text    ${SEARCH_INPUT}
+#    Enter Input    ${first_input}
+#    ${first_texts}=    Get Normalized Search Results    ${result_locator}
+#    Clear Element Text    ${SEARCH_INPUT}
+#    Enter Input    ${second_input}
+#    ${second_texts}=    Get Normalized Search Results    ${result_locator}
+#    Should Be Equal As Lists    ${first_texts}    ${second_texts}
+     Should Be Equal    ${LOWER_CASE_RESULTS}    ${UPPER_CASE_RESULTS}
 
 There Is No Available Spot In The Location
     [Documentation]
