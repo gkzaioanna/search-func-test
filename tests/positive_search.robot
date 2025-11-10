@@ -41,7 +41,8 @@ Test 4 Search should not be case sensitive
     Then The Results In Both Cases Should Be The Same
 
 Test 5 Search should display message when no location is available
-    [Documentation]
+    [Documentation]    This test verifies that when a user provides input and there is
+    ...    no available spot, the HMI should display an appropriate message.
     [Teardown]    Close Browser
     Given The User Has Access To Homepage
     When The User Enters A Location In The Search Form

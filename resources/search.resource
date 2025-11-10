@@ -26,7 +26,7 @@ ${SQL_INJECTION}      "' OR 1=1 --"
 ${SCRIPT_INJECTION}    "<script>alert('test')</script>"
 ${LOWER_CASE_INPUT}    utrecht centraal
 ${UPPER_CASE_INPUT}    Utrecht Centraal
-${NO_AVAILABILITY_LOCATION}    Thessalia
+${NO_AVAILABILITY_INPUT}    Thessalia
 
 *** Keywords ***
 #Clicks The Search Button
@@ -92,7 +92,7 @@ The User Enters A Partial Input In The Search Form
 
 The User Enters A Location In The Search Form
     [Documentation]    The user enters a location in the search form.
-    Enter Input    ${NO_AVAILABILITY_LOCATION}
+    Enter Input    ${NO_AVAILABILITY_INPUT}
 
 Get Normalized Search Results
     [Documentation]    Normalizes page element.
