@@ -25,6 +25,7 @@ ${INVALID_INPUT}      123ABCslpw
 ${MALICIOUS_INPUT}    !@#$%^&*(){}":?><|][~
 ${LOWER_CASE_INPUT}    utrecht centraal
 ${UPPER_CASE_INPUT}    Utrecht Centraal
+${NO_AVAILABILITY_LOCATION}    Thessalia
 
 *** Keywords ***
 #Clicks The Search Button
@@ -84,6 +85,10 @@ The User Enters A Partial Input In The Search Form
     [Documentation]    The user does not enter the full input.
     Enter Input    ${VALID_INPUT_1}[0:4]
 
+The User Enters A Location In The Search Form
+    [Documentation]    The user enters a location in the search form.
+    Enter Input    ${NO_AVAILABILITY_LOCATION}
+
 Get Normalized Search Results
     [Arguments]    ${result_locator}=${SEARCH_RESULTS}
     Wait Until Page Contains Element    ${result_locator}    timeout=10s
@@ -124,6 +129,15 @@ The Results In Both Cases Should Be The Same
 #    Should Be Equal As Lists    ${first_texts}    ${second_texts}
      Should Be Equal    ${LOWER_CASE_RESULTS}    ${UPPER_CASE_RESULTS}
 
+The HMI Should Display A No Available Location Message
+    [Arguments]    ${msg}
+    Wait Until Page Contains    ${msg}    timeout=10s
+    Custom Capture Screenshot
+
 There Is No Available Spot In The Location
-    [Documentation]
-    Go To
+    [Documentation]    Checks or simulates that the location has no available spots
+    # Option 1: Navigate to a known full location
+    # Enter Input    ${FULL_LOCATION}   # e.g., a location known to have 0 spots
+    # Option 2: Wait for the system to indicate full
+    Wait Until Page Contains    ${NO_LOCATION_TXT}    timeout=10s
+    Custom Capture Screenshot

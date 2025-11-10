@@ -55,14 +55,14 @@ Test 6 Search should not be case sensitive
     When The User Enters Location In Lower Case In The Search Form
     And The User Enters Location In Upper Case In The Search Form
     Then The Results In Both Cases Should Be The Same
-#
-#Test 7 Search should display message when no location is available
-#    [Documentation]
-#    [Teardown]    Close Browser
-#    Given The User Has Access To Homepage
-#    When The User Enters A Valid Place Or Address In The Search Form
-#    And There Is No Available Spot In The Location
-#    Then The HMI Should Display A Message    ${NO_LOCATION_TXT}
+
+Test 7 Search should display message when no location is available
+    [Documentation]
+    [Teardown]    Close Browser
+    Given The User Has Access To Homepage
+    When The User Enters A Location In The Search Form
+    And There Is No Available Spot In The Location
+    Then The HMI Should Display A No Available Location Message    ${NO_LOCATION_TXT}
 #
 #Test 8 Manual Test Search should not allow malicious data
 #    [Documentation]    This test verifies that when a user enters dangerous data
