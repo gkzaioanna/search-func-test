@@ -19,7 +19,7 @@ ${SEARCH_INPUT}        //input[@placeholder='Where are you going?']
 ${SEARCH_RESULTS}    //div//p[contains(@class,'truncate body-small-2')]
 # User Input
 ${VALID_INPUT_1}      Amsterdam
-${VALID_INPUT_2}      1101AX
+${VALID_INPUT_2}      1101 AX
 ${INVALID_INPUT}      123ABCslpw
 ${MALICIOUS_INPUT}    !@#$%^&*(){}":?><|][~
 ${LOWER_CASE_INPUT}    utrecht centraal
@@ -36,7 +36,7 @@ ${UPPER_CASE_INPUT}    Utrecht Centraal
 #    Capture Page Screenshot    search_btn.png
 
 Enter Input
-    [Documentation]
+    [Documentation]    Enters input in the search form.
     [Arguments]    ${input}
     Wait Until Element Is Visible    ${SEARCH_INPUT_BASE}    10s
     Input Text    ${SEARCH_INPUT_BASE}    ${input}
@@ -45,55 +45,55 @@ Enter Input
     Custom Capture Screenshot
 
 The User Enters A Valid Place Or Address In The Search Form
-    [Documentation]
+    [Documentation]    The user provides correct input.
     Enter Input    ${VALID_INPUT_1}
 
 The User Enters Invalid Input In The Search Form
-    [Documentation]
+    [Documentation]    The user enters incorrect input.
     Enter Input    ${INVALID_INPUT}
 
 The User Enters Nothing In The Search Form
-    [Documentation]
+    [Documentation]    The user provides no input.
     No Operation
     Press Keys    ${SEARCH_INPUT_BASE}     ENTER
 
 The User Includes Extra Space In The Input In The Search Form
-    [Documentation]
+    [Documentation]    The user input contains unnecessary spaces.
     Enter Input        ${SPACE}${VALID_INPUT_2}
 
 The User Inputs Dangerous Content In The Search Form
-    [Documentation]
+    [Documentation]    The user input is dangerous.
     Enter Input    ${MALICIOUS_INPUT}
 
 The User Should Be Able To View Locations Related To Search
-    [Documentation]
+    [Documentation]    Verifies that the user is able to view related results.
     [Arguments]    ${txt}
+    Sleep    3
     Wait Until Page Contains    ${txt}
     Capture Page Screenshot
 
 No Results Should Be Generated And A Message Is Displayed
-    [Documentation]
+    [Documentation]    Verifies that no results are generated and an appropriate message is displayed.
     [Arguments]    ${txt}
     Sleep    5
     Page Should Contain    ${txt}
     Custom Capture Screenshot
 
-The User Enters Location In The Search Form
-    [Arguments]    ${input}    ${txt}=None
-    [Documentation]    Enters any input into the search field and verifies results.
-    Enter Input    ${input}
-    The User Should Be Able To View Locations Related To Search    ${input}    ${txt}
+The User Enters A Partial Input In The Search Form
+    [Documentation]    The user does not enter the full input.
+    Enter Input    ${VALID_INPUT_1}[0:4]
+
 
 
 The User Enters Location In Lower Case In The Search Form
     [Documentation]
     Enter Input    ${LOWER_CASE_INPUT}
-    The User Should Be Able To View Locations Related To Search    ${LOWER_CASE_INPUT}    ${RELATED_RESULTS_TXT}
+    The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
 
 The User Enters Location In Upper Case In The Search Form
     [Documentation]
     Enter Input    ${UPPER_CASE_INPUT}
-    The User Should Be Able To View Locations Related To Search    ${UPPER_CASE_INPUT}    ${RELATED_RESULTS_TXT}
+    The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
 
 The Results In Both Cases Should Be The Same
     [Arguments]    ${first_input}    ${second_input}    ${result_locator}=${SEARCH_RESULTS}
@@ -115,8 +115,6 @@ The Results In Both Cases Should Be The Same
     END
     Custom Capture Screenshot
     Should Be Equal As Lists    ${first_texts}    ${second_texts}
-
-
 
 There Is No Available Spot In The Location
     [Documentation]
