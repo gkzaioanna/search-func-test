@@ -22,7 +22,8 @@ ${SEARCH_RESULTS}    //div//p[contains(@class,'truncate body-small-2')]
 ${VALID_INPUT_1}      Amsterdam
 ${VALID_INPUT_2}      1101 AX
 ${INVALID_INPUT}      123ABCslpw
-${MALICIOUS_INPUT}    !@#$%^&*(){}":?><|][~
+${SQL_INJECTION}      "' OR 1=1 --"
+${SCRIPT_INJECTION}    "<script>alert('test')</script>"
 ${LOWER_CASE_INPUT}    utrecht centraal
 ${UPPER_CASE_INPUT}    Utrecht Centraal
 ${NO_AVAILABILITY_LOCATION}    Thessalia
@@ -63,9 +64,13 @@ The User Includes Extra Space In The Input In The Search Form
     [Documentation]    The user input contains unnecessary spaces.
     Enter Input        ${SPACE}${VALID_INPUT_2}
 
-The User Inputs Dangerous Content In The Search Form
-    [Documentation]    The user input is dangerous.
-    Enter Input    ${MALICIOUS_INPUT}
+The User Attempts SQL Injection In The Search Form
+    [Documentation]    The user attempts an SQL injection attack.
+    Enter Input    ${SQL_INJECTION}
+
+The User Attempts Script Injection In The Search Form
+    [Documentation]    The user attempts a scripting attack.
+    Enter Input    ${SCRIPT_INJECTION}
 
 The User Should Be Able To View Locations Related To Search
     [Documentation]    Verifies that the user is able to view related results.
@@ -90,6 +95,7 @@ The User Enters A Location In The Search Form
     Enter Input    ${NO_AVAILABILITY_LOCATION}
 
 Get Normalized Search Results
+    [Documentation]    Normalizes page element.
     [Arguments]    ${result_locator}=${SEARCH_RESULTS}
     Wait Until Page Contains Element    ${result_locator}    timeout=10s
     ${elements}=    Get WebElements    ${result_locator}
@@ -103,14 +109,14 @@ Get Normalized Search Results
     RETURN    ${texts}
 
 The User Enters Location In Lower Case In The Search Form
-    [Documentation]
+    [Documentation]    The user types location in lower case.
     Enter Input    ${LOWER_CASE_INPUT}
     The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
     ${LOWER_CASE_RESULTS}=    Get Normalized Search Results
     Set Suite Variable    ${LOWER_CASE_RESULTS}
 
 The User Enters Location In Upper Case In The Search Form
-    [Documentation]
+    [Documentation]    The User types location in upper case.
     Close Browser
     The User Has Access To Homepage
     Enter Input    ${UPPER_CASE_INPUT}
@@ -119,25 +125,31 @@ The User Enters Location In Upper Case In The Search Form
     Set Suite Variable    ${UPPER_CASE_RESULTS}
 
 The Results In Both Cases Should Be The Same
-#    [Arguments]    ${lower_case_results}    ${upper_case_results}    #${result_locator}=${SEARCH_RESULTS}
-#    Clear Element Text    ${SEARCH_INPUT}
-#    Enter Input    ${first_input}
-#    ${first_texts}=    Get Normalized Search Results    ${result_locator}
-#    Clear Element Text    ${SEARCH_INPUT}
-#    Enter Input    ${second_input}
-#    ${second_texts}=    Get Normalized Search Results    ${result_locator}
-#    Should Be Equal As Lists    ${first_texts}    ${second_texts}
+    [Documentation]    Compares the results.
      Should Be Equal    ${LOWER_CASE_RESULTS}    ${UPPER_CASE_RESULTS}
 
 The HMI Should Display A No Available Location Message
+    [Documentation]    Verifies appropriate message is displayed on the HMI.
     [Arguments]    ${msg}
     Wait Until Page Contains    ${msg}    timeout=10s
     Custom Capture Screenshot
 
 There Is No Available Spot In The Location
     [Documentation]    Checks or simulates that the location has no available spots
-    # Option 1: Navigate to a known full location
-    # Enter Input    ${FULL_LOCATION}   # e.g., a location known to have 0 spots
-    # Option 2: Wait for the system to indicate full
     Wait Until Page Contains    ${NO_LOCATION_TXT}    timeout=10s
     Custom Capture Screenshot
+
+The User Enters Only Spaces In The Search Form
+    [Documentation]    User input consists only of spaces.
+    Enter Input    ${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}
+
+*** Keywords ***
+Generate Long Input
+    [Arguments]    ${length}=300
+    ${long_input}=    Evaluate    ('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890' * 50)[:${length}]
+    RETURN    ${long_input}
+
+The User Enters Excessively Long Input In The Search Form
+    [Documentation]    User input consists of excessively long characters.
+    ${LONG_INPUT}=    Generate Long Input    400
+    Enter Input    ${LONG_INPUT}

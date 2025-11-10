@@ -14,23 +14,7 @@ Test 1 Search with a valid input
     When The User Enters A Valid Place Or Address In The Search Form
     Then The User Should Be Able To View Locations Related To Search    ${VALID_INPUT_1}
 
-Test 2 Search with an invalid input
-    [Documentation]    This test verifies that when a user enters invalid location or address,
-    ...    then the HMI should display an appropriate message and no results.
-    [Teardown]    Close Browser
-    Given The User Has Access To Homepage
-    When The User Enters Invalid Input In The Search Form
-    Then No Results Should Be Generated And A Message Is Displayed    ${INVALID_INPUT_TXT}
-
-Test 3 Search with empty input
-    [Documentation]    This test verifies that when a user provides no input in the search form,
-    ...    then the HMI should display an appropriate message and no results.
-    [Teardown]    Close Browser
-    Given The User Has Access To Homepage
-    When The User Enters Nothing In The Search Form
-    Then No Results Should Be Generated And A Message Is Displayed    ${EMPTY_INPUT_TXT}
-
-Test 4 Search should not consider trailing spaces
+Test 2 Search should not consider trailing spaces
     [Documentation]    This test verifies that when a user includes unnecessary spaces in the
     ...    search form, then the HMI should display the related results according to search.
     [Teardown]    Close Browser
@@ -38,7 +22,7 @@ Test 4 Search should not consider trailing spaces
     When The User Includes Extra Space In The Input In The Search Form
     Then The User Should Be Able To View Locations Related To Search    ${VALID_INPUT_2}
 
-Test 5 Partial match search
+Test 3 Partial match search
     [Documentation]    This test verifies that when a user provides partial input to the
     ...    search form, then the HMI should display the related results according to search.
     [Teardown]    Close Browser
@@ -46,7 +30,7 @@ Test 5 Partial match search
     When The User Enters A Partial Input In The Search Form
     Then The User Should Be Able To View Locations Related To Search    ${RELATED_RESULTS_TXT}
 
-Test 6 Search should not be case sensitive
+Test 4 Search should not be case sensitive
     [Documentation]    This test verifies that when a user provides input in lower case or
     ...    in upper case in the search form, then the HMI should display the related results
     ...    according to search and the results should be the same.
@@ -56,18 +40,10 @@ Test 6 Search should not be case sensitive
     And The User Enters Location In Upper Case In The Search Form
     Then The Results In Both Cases Should Be The Same
 
-Test 7 Search should display message when no location is available
+Test 5 Search should display message when no location is available
     [Documentation]
     [Teardown]    Close Browser
     Given The User Has Access To Homepage
     When The User Enters A Location In The Search Form
     And There Is No Available Spot In The Location
     Then The HMI Should Display A No Available Location Message    ${NO_LOCATION_TXT}
-#
-#Test 8 Manual Test Search should not allow malicious data
-#    [Documentation]    This test verifies that when a user enters dangerous data
-#    ...    in the search form, then no result is generated and a warning message is displayed.
-#    [Teardown]    Close Browser
-#    Given The User Has Access To Homepage
-#    When The User Enters Dangerous Content In The Search Form
-#    Then No Results Should Be Generated And A Message Is Displayed    ${INVALID_INPUT_TXT}
