@@ -29,15 +29,6 @@ ${UPPER_CASE_INPUT}    Utrecht Centraal
 ${NO_AVAILABILITY_INPUT}    Thessalia
 
 *** Keywords ***
-#Clicks The Search Button
-#    [Documentation]
-#    Set Window Size    1366    1200
-#    Wait Until Element Is Visible    ${SEARCH_BTN}    30s
-#    Wait Until Element Is Enabled    ${SEARCH_BTN}    20s
-#    Scroll Element Into View    ${SEARCH_BTN}
-#    Sleep    2
-#    Capture Page Screenshot    search_btn.png
-
 Enter Input
     [Documentation]    Enters input in the search form.
     [Arguments]    ${input}
@@ -45,6 +36,14 @@ Enter Input
     Input Text    ${SEARCH_INPUT_BASE}    ${input}
     Sleep    2
     Press Keys    ${SEARCH_INPUT_BASE}     ENTER
+    Custom Capture Screenshot
+
+Provide Input Without Entering
+    [Documentation]    Provides input in the search form.
+    [Arguments]    ${input}
+    Wait Until Element Is Visible    ${SEARCH_INPUT_BASE}    10s
+    Input Text    ${SEARCH_INPUT_BASE}    ${input}
+    Sleep    2
     Custom Capture Screenshot
 
 The User Enters A Valid Place Or Address In The Search Form
@@ -143,7 +142,6 @@ The User Enters Only Spaces In The Search Form
     [Documentation]    User input consists only of spaces.
     Enter Input    ${SPACE}${SPACE}${SPACE}${SPACE}${SPACE}
 
-*** Keywords ***
 Generate Long Input
     [Arguments]    ${length}=300
     ${long_input}=    Evaluate    ('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890' * 50)[:${length}]
@@ -153,3 +151,20 @@ The User Enters Excessively Long Input In The Search Form
     [Documentation]    User input consists of excessively long characters.
     ${LONG_INPUT}=    Generate Long Input    400
     Enter Input    ${LONG_INPUT}
+
+The User Provides Input In The Search Form
+    [Documentation]    User provides input in the search field without entering.
+    Provide Input Without Entering    ${VALID_INPUT_1}
+
+The User Clears Input
+    [Documentation]    User removes input from the search field.
+    [Arguments]    ${locator}=${SEARCH_INPUT_BASE}
+    Wait Until Element Is Visible    ${locator}    10s
+    Clear Element Text    ${locator}
+    Sleep    1
+    Custom Capture Screenshot
+
+Search Form Field Is Cleared
+    [Documentation]    Verifies that the search form is cleared.
+    [Arguments]    ${locator}=${SEARCH_INPUT_BASE}
+    Textfield Value Should Be    ${locator}    ${EMPTY}
