@@ -1,3 +1,11 @@
+### NOTES ###
+This file is provided as a .txt to demonstrate planned test scenarios and automation approach.
+Tests are expected to fail because the functionality is not yet implemented or behaves differently than expected,
+(e.g. the application returns results for injection payloads).
+The keywords and structure show how these tests would be executed with screenshots captured for verification.
+Once the features are available, this can be converted into a runnable .robot file.
+### END ###
+
 *** Settings ***
 Resource    ../resources/search.resource
 Resource    ../resources/browser.resource
